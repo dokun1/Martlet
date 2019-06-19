@@ -48,6 +48,35 @@ final class MartletTests: XCTestCase {
     }
   }
   
+  func testMultipleStyles() {
+    func multipleSelectorPage() -> CSS {
+      heading(.h1) {
+        textAlign(.center)
+        fontSize(16)
+      }
+      paragraph {
+        textAlign(.left)
+      }
+    }
+    let correctCSS = """
+      h1 {
+        text-align: center;
+        font-size: 16;
+      }
+      p {
+        font-size: 12;
+      }
+      """.replacingOccurrences(of: "\n", with: "")
+    let martlet = Martlet()
+    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
+    do {
+      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleSelectorPage())
+      XCTAssertEqual(rendered, correctCSS)
+    } catch let error {
+      XCTFail(error.localizedDescription)
+    }
+  }
+  
   public static func renderForTesting(with martlet: Martlet, css: CSS) throws -> String {
     do {
       try martlet.render(css)

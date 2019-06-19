@@ -34,14 +34,14 @@ struct CSSSelectorNode: CSS {
 }
 
 struct CSSDeclarationNode: CSS {
+  var declaration: Declaration
+  
   func renderAsCSS(into stream: CSSOutputStream) {
     stream.writeIndent()
     stream.write(declaration)
     stream.write(";")
     stream.writeNewline()
   }
-  
-  var declaration: Declaration
 }
 
 struct CSSMultiNode: CSS {

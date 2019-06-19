@@ -14,6 +14,6 @@ public protocol CSS {
   /// Renders the contents of this object as CSS to the provided output stream
   /// as formatted CSS text.
   /// - Parameters:
-  ///   - stream: The stream to print the resulting HTML to.
+  ///   - stream: The stream to print the resulting CSS to.
   func renderAsCSS(into stream: CSSOutputStream)
 }

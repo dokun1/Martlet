@@ -10,7 +10,7 @@ public class Martlet {
   
   public var outputLocation: MartletOutput = .stdout
   
-  /// Handles retrieving correct `HTMLOutputStream` for where rendered document will go
+  /// Handles retrieving correct `CSSOutputStream` for where rendered document will go
   private func getStream(for content: CSS) throws -> CSSOutputStream {
     switch outputLocation {
     case .stdout:
