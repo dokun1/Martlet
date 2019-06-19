@@ -7,12 +7,14 @@ final class MartletTests: XCTestCase {
       heading(.h1) {
         textAlign(.left)
         fontSize(16)
+        color("red")
       }
     }
     let correctCSS = """
       h1 {
         text-align: left;
         font-size: 16;
+        color: red;
       }
       """.replacingOccurrences(of: "\n", with: "")
     let martlet = Martlet()

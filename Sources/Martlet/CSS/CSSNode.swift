@@ -55,5 +55,5 @@ struct CSSMultiNode: CSS {
 
 public struct Declaration {
   let property: String
-  let value: String?
+  let value: String
 }

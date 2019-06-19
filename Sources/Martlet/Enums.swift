@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Enums.swift
 //  
 //
 //  Created by David Okun on 6/19/19.
@@ -7,7 +7,6 @@
 
 import Foundation
 
-/// Alignment of the content in a cell
 public enum Alignment: String {
   case left = "left"
   case right = "right"

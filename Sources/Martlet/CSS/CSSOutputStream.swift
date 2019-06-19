@@ -56,9 +56,7 @@ public class CSSOutputStream {
   func write(_ declaration: Declaration) {
     write(declaration.property)
     write(": ")
-    if let value = declaration.value {
-      write(value)
-    }
+    write(declaration.value)
   }
   
   func writeEscaped<Str: StringProtocol>(_ string: Str) {
