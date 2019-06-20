@@ -51,6 +51,7 @@ final class MartletTests: XCTestCase {
   }
   
   func testMultipleStyles() {
+    @CSSBuilder
     func multipleSelectorPage() -> CSS {
       heading(.h1) {
         textAlign(.center)
@@ -58,6 +59,7 @@ final class MartletTests: XCTestCase {
       }
       paragraph {
         textAlign(.left)
+        fontSize(12)
       }
     }
     let correctCSS = """
@@ -66,6 +68,7 @@ final class MartletTests: XCTestCase {
         font-size: 16;
       }
       p {
+        text-align: left;
         font-size: 12;
       }
       """.replacingOccurrences(of: "\n", with: "")
