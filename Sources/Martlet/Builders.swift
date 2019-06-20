@@ -20,12 +20,7 @@ public func `selector`(element: String, @CSSBuilder child: () -> CSS) -> CSS {
 }
 
 public func `selector`(elements: [String], @CSSBuilder child: () -> CSS) -> CSS {
-  var buffer = String()
-  for element in elements {
-    buffer.append(element)
-    buffer.append(", ")
-  }
-  return CSSSelectorNode(selector: String(buffer.dropLast(2)), child: child())
+  return CSSSelectorNode(selector: elements.joined(separator: ", "), child: child())
 }
 
 public func `selector`(`class`: String, @CSSBuilder child: () -> CSS) -> CSS {
