@@ -29,7 +29,7 @@ final class MartletTests: XCTestCase {
   
   func testCustomSelector() {
     func customPage() -> CSS {
-      selector("h3") {
+      selector(element: "h3") {
         textAlign(.center)
         fontSize(8)
       }
@@ -82,6 +82,74 @@ final class MartletTests: XCTestCase {
     }
   }
   
+  func testClassSelector() {
+    @CSSBuilder
+    func multipleSelectorPage() -> CSS {
+      selector(class: "flexbox-container") {
+        fontSize(12)
+      }
+    }
+    let correctCSS = """
+      .flexbox-container {
+        font-size: 12;
+      }
+      """.replacingOccurrences(of: "\n", with: "")
+    let martlet = Martlet()
+    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
+    do {
+      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleSelectorPage())
+      XCTAssertEqual(rendered, correctCSS)
+    } catch let error {
+      XCTFail(error.localizedDescription)
+    }
+  }
+  
+  func testIdSelector() {
+    @CSSBuilder
+    func multipleSelectorPage() -> CSS {
+      selector(id: "flexbox-container") {
+        fontSize(12)
+      }
+    }
+    let correctCSS = """
+      #flexbox-container {
+        font-size: 12;
+      }
+      """.replacingOccurrences(of: "\n", with: "")
+    let martlet = Martlet()
+    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
+    do {
+      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleSelectorPage())
+      XCTAssertEqual(rendered, correctCSS)
+    } catch let error {
+      XCTFail(error.localizedDescription)
+    }
+  }
+  
+  func testMultipleElementsSelector() {
+    let elements = ["h1", "p"]
+    
+    @CSSBuilder
+    func multipleSelectorPage() -> CSS {
+      selector(elements: elements) {
+        fontSize(12)
+      }
+    }
+    let correctCSS = """
+      h1, p {
+        font-size: 12;
+      }
+      """.replacingOccurrences(of: "\n", with: "")
+    let martlet = Martlet()
+    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
+    do {
+      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleSelectorPage())
+      XCTAssertEqual(rendered, correctCSS)
+    } catch let error {
+      XCTFail(error.localizedDescription)
+    }
+  }
+  
   public static func renderForTesting(with martlet: Martlet, css: CSS) throws -> String {
     do {
       try martlet.render(css)
@@ -94,6 +162,10 @@ final class MartletTests: XCTestCase {
 
   static var allTests = [
     ("testHeading", testHeading),
-    ("testCustomSelector", testCustomSelector)
+    ("testCustomSelector", testCustomSelector),
+    ("testMultipleStyles", testMultipleStyles),
+    ("testClassSelector", testClassSelector),
+    ("testIdSelector", testIdSelector),
+    ("testMultipleElementsSelector", testMultipleElementsSelector)
   ]
 }
