@@ -15,19 +15,19 @@ public func paragraph(@CSSBuilder child: () -> CSS) -> CSS {
   return CSSSelectorNode(selector: "p", child: child())
 }
 
-public func `selector`(element: String, @CSSBuilder child: () -> CSS) -> CSS {
+public func selector(element: String, @CSSBuilder child: () -> CSS) -> CSS {
   return CSSSelectorNode(selector: element, child: child())
 }
 
-public func `selector`(elements: [String], @CSSBuilder child: () -> CSS) -> CSS {
+public func selector(elements: [String], @CSSBuilder child: () -> CSS) -> CSS {
   return CSSSelectorNode(selector: elements.joined(separator: ", "), child: child())
 }
 
-public func `selector`(`class`: String, @CSSBuilder child: () -> CSS) -> CSS {
+public func selector(`class`: String, @CSSBuilder child: () -> CSS) -> CSS {
   return CSSSelectorNode(selector: ".\(`class`)", child: child())
 }
 
-public func `selector`(id: String, @CSSBuilder child: () -> CSS) -> CSS {
+public func selector(id: String, @CSSBuilder child: () -> CSS) -> CSS {
   return CSSSelectorNode(selector: "#\(id)", child: child())
 }
 
