@@ -73,7 +73,7 @@ public class CSSOutputStream {
   
   /// Renders the provided `CSS` node as CSS text to the receiver's stream.
   public func render(_ content: CSS) {
-    content.renderAsCSS(into: self)
+    content.renderAsCSS(into: self, selectors: [])
   }
 }
 

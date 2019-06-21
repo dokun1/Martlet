@@ -31,7 +31,7 @@ public class Martlet {
   public func render(_ content: CSS) throws {
     do {
       let stream = try getStream(for: content)
-      content.renderAsCSS(into: stream)
+      content.renderAsCSS(into: stream, selectors: [])
     } catch let error {
       throw error
     }

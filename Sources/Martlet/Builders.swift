@@ -8,27 +8,27 @@
 import Foundation
 
 public func heading(_ weight: HeadingWeight, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSSelectorNode(selector: weight.rawValue, child: child())
+  return CSSElementNode(element: weight.rawValue, child: child())
 }
 
 public func paragraph(@CSSBuilder child: () -> CSS) -> CSS {
-  return CSSSelectorNode(selector: "p", child: child())
+  return CSSElementNode(element: "p", child: child())
 }
 
 public func selector(element: String, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSSelectorNode(selector: element, child: child())
+  return CSSElementNode(element: element, child: child())
 }
 
 public func selector(elements: [String], @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSSelectorNode(selector: elements.joined(separator: ", "), child: child())
+  return CSSElementNode(element: elements.joined(separator: ", "), child: child())
 }
 
 public func selector(`class`: String, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSSelectorNode(selector: ".\(`class`)", child: child())
+  return CSSElementNode(element: ".\(`class`)", child: child())
 }
 
 public func selector(id: String, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSSelectorNode(selector: "#\(id)", child: child())
+  return CSSElementNode(element: "#\(id)", child: child())
 }
 
 public func fontSize(_ size: Int) -> CSS {
@@ -41,4 +41,14 @@ public func color(_ color: String) -> CSS {
 
 public func textAlign(_ alignment: Alignment) -> CSS {
   return CSSDeclarationNode(declaration: Declaration(property: "text-align", value: alignment.rawValue))
+}
+
+extension CSS {
+  public func after() -> CSS {
+    return CSSSelectorNode(selector: Selector(operator: .after), child: self)
+  }
+  
+  public func before() -> CSS {
+    return CSSSelectorNode(selector: Selector(operator: .before), child: self)
+  }
 }

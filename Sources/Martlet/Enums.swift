@@ -22,3 +22,9 @@ public enum HeadingWeight: String {
   case h5 = "h5"
   case h6 = "h6"
 }
+
+public enum Operator: String {
+  case after = "::after"
+  case before = "::before"
+  case focus = ":focus"
+}

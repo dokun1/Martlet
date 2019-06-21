@@ -7,16 +7,10 @@
 
 import Foundation
 
-extension String: CSS {
-  public func renderAsCSS(into stream: CSSOutputStream) {
-    stream.write(self)
-  }
-}
-
 extension Optional: CSS where Wrapped: CSS {
-  public func renderAsCSS(into stream: CSSOutputStream) {
+  public func renderAsCSS(into stream: CSSOutputStream, selectors: [Selector]) {
     if let css = self {
-      css.renderAsCSS(into: stream)
+      css.renderAsCSS(into: stream, selectors: selectors)
     }
   }
 }
