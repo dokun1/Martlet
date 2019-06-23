@@ -17,3 +17,7 @@ public protocol CSS {
   ///   - stream: The stream to print the resulting CSS to.
   func renderAsCSS(into stream: CSSOutputStream, selectors: [Selector])
 }
+
+public protocol Renderable {
+  func render() -> String
+}

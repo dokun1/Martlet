@@ -15,20 +15,24 @@ public func paragraph(@CSSBuilder child: () -> CSS) -> CSS {
   return CSSElementNode(element: "p", child: child())
 }
 
-public func selector(element: String, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSElementNode(element: element, child: child())
+public func custom<R: Renderable>(element: R, @CSSBuilder child: () -> CSS) -> CSS {
+  return CSSElementNode(element: element.render(), child: child())
 }
 
-public func selector(elements: [String], @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSElementNode(element: elements.joined(separator: ", "), child: child())
+public func custom<R: Renderable>(elements: [R], @CSSBuilder child: () -> CSS) -> CSS {
+  var rendered = [String]()
+  for element in elements {
+    rendered.append(element.render())
+  }
+  return CSSElementNode(element: rendered.joined(separator: ", "), child: child())
 }
 
-public func selector(`class`: String, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSElementNode(element: ".\(`class`)", child: child())
+public func selector<R: Renderable>(`class`: R, @CSSBuilder child: () -> CSS) -> CSS {
+  return CSSElementNode(element: ".\(`class`.render())", child: child())
 }
 
-public func selector(id: String, @CSSBuilder child: () -> CSS) -> CSS {
-  return CSSElementNode(element: "#\(id)", child: child())
+public func selector<R: Renderable>(id: R, @CSSBuilder child: () -> CSS) -> CSS {
+  return CSSElementNode(element: "#\(id.render())", child: child())
 }
 
 public func fontSize(_ size: Int) -> CSS {
@@ -41,14 +45,4 @@ public func color(_ color: String) -> CSS {
 
 public func textAlign(_ alignment: Alignment) -> CSS {
   return CSSDeclarationNode(declaration: Declaration(property: "text-align", value: alignment.rawValue))
-}
-
-extension CSS {
-  public func after() -> CSS {
-    return CSSSelectorNode(selector: Selector(operator: .after), child: self)
-  }
-  
-  public func before() -> CSS {
-    return CSSSelectorNode(selector: Selector(operator: .before), child: self)
-  }
 }

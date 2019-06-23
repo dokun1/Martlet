@@ -1,7 +1,7 @@
 import XCTest
 @testable import Martlet
 
-final class MartletTests: XCTestCase {
+final class MartletElementTests: XCTestCase {
   func testHeading() {
     func simplePage() -> CSS {
       heading(.h1) {
@@ -20,51 +20,7 @@ final class MartletTests: XCTestCase {
     let martlet = Martlet()
     martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
     do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: simplePage())
-      XCTAssertEqual(rendered, correctCSS)
-    } catch let error {
-      XCTFail(error.localizedDescription)
-    }
-  }
-  
-  func testAfterSelector() {
-    @CSSBuilder
-    func page() -> CSS {
-      heading(.h1) {
-        textAlign(.center)
-      }.after()
-    }
-    let correctCSS = """
-      h1::after {
-        text-align: center;
-      }
-      """.replacingOccurrences(of: "\n", with: "")
-    let martlet = Martlet()
-    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
-    do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: page())
-      XCTAssertEqual(rendered, correctCSS)
-    } catch let error {
-      XCTFail(error.localizedDescription)
-    }
-  }
-  
-  func testBeforeSelector() {
-    @CSSBuilder
-    func page() -> CSS {
-      heading(.h3) {
-        textAlign(.right)
-      }.before()
-    }
-    let correctCSS = """
-      h3::before {
-        text-align: right;
-      }
-      """.replacingOccurrences(of: "\n", with: "")
-    let martlet = Martlet()
-    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
-    do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: page())
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: simplePage())
       XCTAssertEqual(rendered, correctCSS)
     } catch let error {
       XCTFail(error.localizedDescription)
@@ -72,10 +28,14 @@ final class MartletTests: XCTestCase {
   }
   
   func testCustomElement() {
+    @CSSBuilder
     func customPage() -> CSS {
-      selector(element: "h3") {
+      custom(element: HeadingWeight.h3) {
         textAlign(.center)
         fontSize(8)
+      }
+      custom(element: Element.div) {
+        color("red")
       }
     }
     let correctCSS = """
@@ -83,11 +43,14 @@ final class MartletTests: XCTestCase {
         text-align: center;
         font-size: 8;
       }
+      div {
+        color: red;
+      }
       """.replacingOccurrences(of: "\n", with: "")
     let martlet = Martlet()
     martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
     do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: customPage())
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: customPage())
       XCTAssertEqual(rendered, correctCSS)
     } catch let error {
       XCTFail(error.localizedDescription)
@@ -119,7 +82,7 @@ final class MartletTests: XCTestCase {
     let martlet = Martlet()
     martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
     do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleSelectorPage())
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: multipleSelectorPage())
       XCTAssertEqual(rendered, correctCSS)
     } catch let error {
       XCTFail(error.localizedDescription)
@@ -141,7 +104,7 @@ final class MartletTests: XCTestCase {
     let martlet = Martlet()
     martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
     do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleElementPage())
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: multipleElementPage())
       XCTAssertEqual(rendered, correctCSS)
     } catch let error {
       XCTFail(error.localizedDescription)
@@ -163,7 +126,7 @@ final class MartletTests: XCTestCase {
     let martlet = Martlet()
     martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
     do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleElementPage())
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: multipleElementPage())
       XCTAssertEqual(rendered, correctCSS)
     } catch let error {
       XCTFail(error.localizedDescription)
@@ -175,7 +138,7 @@ final class MartletTests: XCTestCase {
     
     @CSSBuilder
     func multipleElementPage() -> CSS {
-      selector(elements: elements) {
+      custom(elements: elements) {
         fontSize(12)
       }
     }
@@ -187,20 +150,10 @@ final class MartletTests: XCTestCase {
     let martlet = Martlet()
     martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
     do {
-      let rendered = try MartletTests.renderForTesting(with: martlet, css: multipleElementPage())
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: multipleElementPage())
       XCTAssertEqual(rendered, correctCSS)
     } catch let error {
       XCTFail(error.localizedDescription)
-    }
-  }
-  
-  public static func renderForTesting(with martlet: Martlet, css: CSS) throws -> String {
-    do {
-      try martlet.render(css)
-      let rendered = try MartletFileHelper.getRenderedContent(from: Filepath(name: "testing", path: "/tmp/")).replacingOccurrences(of: "\n", with: "")
-      return rendered
-    } catch let error {
-      throw error
     }
   }
 
@@ -210,8 +163,6 @@ final class MartletTests: XCTestCase {
     ("testMultipleStyles", testMultipleStyles),
     ("testClassElement", testClassElement),
     ("testIdElement", testIdElement),
-    ("testMultipleElements", testMultipleElements),
-    ("testAfterSelector", testAfterSelector),
-    ("testBeforeSelector", testBeforeSelector)
+    ("testMultipleElements", testMultipleElements)
   ]
 }

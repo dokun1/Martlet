@@ -37,27 +37,32 @@ struct CSSElementNode: CSS {
   var child: CSS?
   
   func renderAsCSS(into stream: CSSOutputStream, selectors: [Selector]) {
-    stream.write("")
+    /// Write the initial element to be described
     stream.write(element)
-    if selectors.count > 0 {
-      for selector in selectors {
-        stream.write(selector.operator.rawValue)
-      }
+    
+    /// Append any selector operators to the element
+    for selector in selectors {
+      stream.write(selector.render())
     }
+    
+    /// Open the bracket and start describing the elements
     stream.write(" {")
     stream.writeNewline()
     stream.writeIndent()
     
-    /// if the selector has declared children, write them
+    /// If the selector has no declared children (should be rare), close the bracket
     guard let child = child else {
       stream.write("}")
       stream.writeNewline()
       return
     }
     
+    /// Otherwise, render all children associated with this element
     stream.withIndent {
       child.renderAsCSS(into: stream, selectors: [])
     }
+    
+    /// Close the bracket and write a newline to handle the next element
     stream.write("}")
     stream.writeNewline()
   }
@@ -81,10 +86,6 @@ struct CSSMultiNode: CSS {
       child.renderAsCSS(into: stream, selectors: selectors)
     }
   }
-}
-
-public struct Selector {
-  let `operator`: Operator
 }
 
 public struct Declaration {
