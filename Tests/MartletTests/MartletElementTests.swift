@@ -156,6 +156,30 @@ final class MartletElementTests: XCTestCase {
       XCTFail(error.localizedDescription)
     }
   }
+  
+  func testAllElements() {
+    let elements = ["*"]
+    
+    @CSSBuilder
+    func multipleElementPage() -> CSS {
+      custom(elements: elements) {
+        fontSize(12)
+      }
+    }
+    let correctCSS = """
+      * {
+        font-size: 12;
+      }
+      """.replacingOccurrences(of: "\n", with: "")
+    let martlet = Martlet()
+    martlet.outputLocation = .file(filepath: Filepath(name: "testing", path: "/tmp/"))
+    do {
+      let rendered = try MartletTesting.renderForTesting(with: martlet, css: multipleElementPage())
+      XCTAssertEqual(rendered, correctCSS)
+    } catch let error {
+      XCTFail(error.localizedDescription)
+    }
+  }
 
   static var allTests = [
     ("testHeading", testHeading),
