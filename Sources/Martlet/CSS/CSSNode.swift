@@ -89,6 +89,11 @@ struct CSSMultiNode: CSS {
 }
 
 public struct Declaration {
-  let property: String
-  let value: String
+  public let property: String
+  public let value: String
+    
+  public init(property: String, value: String) {
+    self.property = property
+    self.value = value
+  }
 }
