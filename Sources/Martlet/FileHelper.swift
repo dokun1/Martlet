@@ -8,8 +8,13 @@
 import Foundation
 
 public struct Filepath {
-  var name: String
-  var path: String
+  public var name: String
+  public var path: String
+  
+  public init(name: String, path: String) {
+    self.name = name
+    self.path = path
+  }
 }
 
 public class MartletFileHelper {
